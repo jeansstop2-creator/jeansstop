@@ -145,6 +145,17 @@
       .print-area { position: absolute; top: 0; right: 0; width: 100%; background: white; }
     }
   </style>
+<script>
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      if(window.firebaseLoad && window._firebaseReady) {
+        window.firebaseLoad().then(data => {
+          if(data) console.log("✅ Firebase loaded");
+        });
+      }
+    }, 1000);
+  });
+</script>
 </head>
 <body>
 <div class="app-container" id="appRoot"></div>
