@@ -5060,5 +5060,29 @@ window.updateProductionOrderDebtOnEdit = updateProductionOrderDebtOnEdit;
 window.recordFactoryPayment = recordFactoryPayment;
 window.recordLaundryPayment = recordLaundryPayment;
 </script>
+<script>
+  // تأكيد أن Firebase يعمل عند كل حفظ
+  window.forceFirebaseSave = async function() {
+    const dataObj = {
+      products, customers, invoices, warehouses, nextInvoiceId,
+      treasuries, vouchers, nextVoucherId, suppliers, nextSupplierId,
+      productionOrders, nextProductionId, rawMaterialWarehouses,
+      accessoryWarehouses, finishedGoodsWarehouses, laundries, factories,
+      nextLaundryId, nextFactoryId, kpiTargets, debtEntries, nextDebtId,
+      warehouseTransfers, systemUsers, nextUserId
+    };
+    if(window.firebaseSave) {
+      await window.firebaseSave(dataObj);
+      console.log("✅ تم الحفظ على Firebase");
+    }
+  };
+  
+  // استدعاء الحفظ الإضافي بعد كل عملية مهمة
+  const originalSave = saveAllData;
+  window.saveAllData = function() {
+    originalSave();
+    if(window.firebaseSave) window.firebaseSave(getAllDataObj());
+  };
+</script>
 </body>
 </html>
