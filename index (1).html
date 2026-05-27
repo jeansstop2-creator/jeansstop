@@ -8,7 +8,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
   <!-- Firebase -->
-  <script type="module">
+<script>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     const firebaseConfig = { apiKey: "AIzaSyCy7DHmkWQqR84_8QC7tvTRXgBZgRuzCCY", authDomain: "jeans-stop.firebaseapp.com", projectId: "jeans-stop", storageBucket: "jeans-stop.firebasestorage.app", messagingSenderId: "841865308689", appId: "1:841865308689:web:42085a9a2d9070766bdfb0" };
