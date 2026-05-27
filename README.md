@@ -7,6 +7,19 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    const firebaseConfig = { apiKey: "AIzaSyCy7DHmkWQqR84_8QC7tvTRXgBZgRuzCCY", authDomain: "jeans-stop.firebaseapp.com", projectId: "jeans-stop", storageBucket: "jeans-stop.firebasestorage.app", messagingSenderId: "841865308689", appId: "1:841865308689:web:42085a9a2d9070766bdfb0" };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const DATA_DOC = doc(db, "jeansstop", "jeans-stop");
+    window.firebaseSave = async function(dataObj) { try { await setDoc(DATA_DOC, { payload: JSON.stringify(dataObj) }); } catch(e) { console.error("Save error:", e); } };
+    window.firebaseLoad = async function() { try { const snap = await getDoc(DATA_DOC); if(snap.exists()) { const raw = snap.data().payload; return raw ? JSON.parse(raw) : null; } } catch(e) { console.error("Load error:", e); } return null; };
+    window._firebaseReady = true;
+    document.dispatchEvent(new Event("firebaseReady"));
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; background: #0f172a; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
@@ -138,42 +151,65 @@
 
 <script>
   // ========== تحميل وحفظ البيانات ==========
+  function getAllDataObj() {
+    return { products, customers, invoices, warehouses, nextInvoiceId, treasuries, vouchers, nextVoucherId, suppliers, nextSupplierId, productionOrders, nextProductionId, rawMaterialWarehouses, accessoryWarehouses, finishedGoodsWarehouses, laundries, factories, nextLaundryId, nextFactoryId, kpiTargets, debtEntries, nextDebtId, warehouseTransfers, systemUsers, nextUserId };
+  }
+
+  function applyDataObj(data) {
+    if(!data) return;
+    products = data.products || products;
+    customers = data.customers || customers;
+    invoices = data.invoices || invoices;
+    warehouses = data.warehouses || warehouses;
+    nextInvoiceId = data.nextInvoiceId || nextInvoiceId;
+    treasuries = data.treasuries || treasuries;
+    vouchers = data.vouchers || vouchers;
+    nextVoucherId = data.nextVoucherId || nextVoucherId;
+    suppliers = data.suppliers || suppliers;
+    nextSupplierId = data.nextSupplierId || nextSupplierId;
+    productionOrders = data.productionOrders || productionOrders;
+    nextProductionId = data.nextProductionId || nextProductionId;
+    rawMaterialWarehouses = data.rawMaterialWarehouses || rawMaterialWarehouses;
+    accessoryWarehouses = data.accessoryWarehouses || accessoryWarehouses;
+    finishedGoodsWarehouses = data.finishedGoodsWarehouses || finishedGoodsWarehouses;
+    laundries = data.laundries || laundries;
+    factories = data.factories || factories;
+    nextLaundryId = data.nextLaundryId || nextLaundryId;
+    nextFactoryId = data.nextFactoryId || nextFactoryId;
+    kpiTargets = data.kpiTargets || kpiTargets;
+    debtEntries = data.debtEntries || debtEntries;
+    warehouseTransfers = data.warehouseTransfers || warehouseTransfers;
+    nextDebtId = data.nextDebtId || nextDebtId;
+    if(data.systemUsers && data.systemUsers.length > 0) systemUsers = data.systemUsers;
+    nextUserId = data.nextUserId || nextUserId;
+  }
+
   function saveAllData() {
-    localStorage.setItem('crizmaData', JSON.stringify({ products, customers, invoices, warehouses, nextInvoiceId, treasuries, vouchers, nextVoucherId, suppliers, nextSupplierId, productionOrders, nextProductionId, rawMaterialWarehouses, accessoryWarehouses, finishedGoodsWarehouses, laundries, factories, nextLaundryId, nextFactoryId, kpiTargets, debtEntries, nextDebtId, warehouseTransfers, systemUsers, nextUserId }));
+    const dataObj = getAllDataObj();
+    // حفظ محلي كـ backup
+    localStorage.setItem('crizmaData', JSON.stringify(dataObj));
+    // حفظ على Firebase
+    if(window.firebaseSave) window.firebaseSave(dataObj);
   }
   
   function loadAllData() {
+    // تحميل من localStorage مؤقتاً
     const saved = localStorage.getItem('crizmaData');
-    if(saved) {
-      try {
-        const data = JSON.parse(saved);
-        products = data.products || products;
-        customers = data.customers || customers;
-        invoices = data.invoices || invoices;
-        warehouses = data.warehouses || warehouses;
-        nextInvoiceId = data.nextInvoiceId || nextInvoiceId;
-        treasuries = data.treasuries || treasuries;
-        vouchers = data.vouchers || vouchers;
-        nextVoucherId = data.nextVoucherId || nextVoucherId;
-        suppliers = data.suppliers || suppliers;
-        nextSupplierId = data.nextSupplierId || nextSupplierId;
-        productionOrders = data.productionOrders || productionOrders;
-        nextProductionId = data.nextProductionId || nextProductionId;
-        rawMaterialWarehouses = data.rawMaterialWarehouses || rawMaterialWarehouses;
-        accessoryWarehouses = data.accessoryWarehouses || accessoryWarehouses;
-        finishedGoodsWarehouses = data.finishedGoodsWarehouses || finishedGoodsWarehouses;
-        laundries = data.laundries || laundries;
-        factories = data.factories || factories;
-        nextLaundryId = data.nextLaundryId || nextLaundryId;
-        nextFactoryId = data.nextFactoryId || nextFactoryId;
-        kpiTargets = data.kpiTargets || kpiTargets;
-        debtEntries = data.debtEntries || debtEntries;
-        warehouseTransfers = data.warehouseTransfers || warehouseTransfers;
-        nextDebtId = data.nextDebtId || nextDebtId;
-        if(data.systemUsers && data.systemUsers.length > 0) systemUsers = data.systemUsers;
-        nextUserId = data.nextUserId || nextUserId;
-      } catch(e) {}
-    }
+    if(saved) { try { applyDataObj(JSON.parse(saved)); } catch(e) {} }
+  }
+
+  async function loadFromFirebase() {
+    if(!window.firebaseLoad) return;
+    try {
+      const data = await window.firebaseLoad();
+      if(data) {
+        applyDataObj(data);
+        // حفظ نسخة محلية
+        localStorage.setItem('crizmaData', JSON.stringify(data));
+        // تحديث الشاشة الحالية
+        if(currentScreen && currentScreen !== 'login') renderApp();
+      }
+    } catch(e) { console.error('Firebase load error:', e); }
   }
   
   // ========== البيانات الأساسية ==========
@@ -4987,8 +5023,31 @@ document.getElementById('saveProductionBtn')?.addEventListener('click', ()=>{
   }
 
 
+  // بدء التشغيل - تحميل من Firebase ثم عرض الشاشة
+  loadAllData(); // تحميل محلي أولاً للسرعة
+  
   const stored = localStorage.getItem('crizmaUser');
-  if(stored) { try{ currentUser = JSON.parse(stored); if(currentUser) navigateTo('dashboard'); else navigateTo('login'); }catch(e){ navigateTo('login'); } } else navigateTo('login');
+  if(stored) { 
+    try { 
+      currentUser = JSON.parse(stored); 
+      if(currentUser) { 
+        navigateTo('dashboard');
+        // تحميل من Firebase في الخلفية
+        setTimeout(() => loadFromFirebase(), 500);
+      } else { 
+        navigateTo('login'); 
+      }
+    } catch(e) { navigateTo('login'); } 
+  } else { 
+    navigateTo('login'); 
+  }
+  
+  // لما Firebase يكون جاهز، حمّل البيانات
+  document.addEventListener('firebaseReady', () => {
+    if(currentUser && currentScreen !== 'login') {
+      loadFromFirebase();
+    }
+  });
 // جعل الدوال متاحة على مستوى window
 window.showFactoryStatement = showFactoryStatement;
 window.showLaundryStatement = showLaundryStatement;
