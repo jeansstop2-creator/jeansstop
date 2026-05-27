@@ -1345,7 +1345,7 @@ initFactoryLaundryBalances();
         </select>
         <button class="btn btn-purple" id="manageWhBtn"><i class="ti ti-building-warehouse"></i> إدارة المخازن</button>
       </div>
-      <div class="table-panel"><div style="overflow-x:auto"><table class="inv-table"><thead><tr><th>#</th><th>الكود</th><th>الاسم</th><th>المخزن</th><th>الكمية</th><th>سعر الشراء</th><th>سعر البيع</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="productsTableBody"></tbody></table></div><div class="pagination"><div id="productsPagInfo"></div><div id="productsPagBtns"></div></div></div></div></div></div>
+      <div class="cart-panel"><div style="overflow-x:auto"><table class="inv-table"><thead><tr><th>#</th><th>الكود</th><th>الاسم</th><th>المخزن</th><th>الكمية</th><th>سعر الشراء</th><th>سعر البيع</th><th>الحالة</th><th>إجراءات</th></tr></thead><tbody id="productsTableBody"></tbody></table></div><div class="pagination"><div id="productsPagInfo"></div><div id="productsPagBtns"></div></div></div></div></div></div>
       <div class="modal-bg" id="productModal"><div class="modal"><div class="modal-title" id="productModalTitle"><i class="ti ti-package"></i> إضافة منتج جديد</div><div class="field"><label>اسم المنتج</label><input id="productName"></div><div class="field"><label>الكود</label><input id="productCode"></div><div class="field"><label>المخزن</label><select id="productWh">${warehouses.map(w=>`<option>${w}</option>`).join('')}</select></div><div class="field"><label>الكمية</label><input id="productQty" type="number" value="0"></div><div class="field"><label>الحد الأدنى</label><input id="productMin" type="number" value="10"></div><div class="field"><label>سعر الشراء (التكلفة)</label><input id="productCost" type="number" value="0" step="0.01"></div><div class="field"><label>سعر البيع</label><input id="productPrice" type="number" value="0" step="0.01"></div><div class="modal-foot" style="display:flex;gap:10px;margin-top:1rem"><button class="btn btn-success" id="saveProductBtn">حفظ</button><button class="btn btn-outline" id="closeProductModal">إلغاء</button></div></div></div>
       <div class="modal-bg" id="warehouseModal"><div class="modal" style="max-width:550px">
         <div class="modal-title"><i class="ti ti-building-warehouse" style="color:#a78bfa"></i> إدارة المخازن</div>
@@ -1822,7 +1822,7 @@ initFactoryLaundryBalances();
       </div>
       <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1rem"><button class="btn btn-success" id="newCustomerBtn"><i class="ti ti-user-plus"></i> إضافة عميل جديد</button><div style="display:flex;gap:8px"><button class="btn btn-primary" id="exportCustomersBtn"><i class="ti ti-download"></i> تصدير Excel</button><button class="btn btn-amber" id="importCustomersBtn"><i class="ti ti-upload"></i> استيراد Excel</button><input type="file" id="importCustomersFile" accept=".xlsx,.xls" style="display:none"></div></div>
       <input id="customerSearch" placeholder="🔍 بحث باسم العميل أو الهاتف..." class="search-inp" style="margin-bottom:1rem">
-      <div class="table-panel"><div style="overflow-x:auto"><table class="inv-table"><thead><tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>العنوان</th><th>الرصيد</th><th>إجراءات</th></tr></thead><tbody id="customersTableBody"></tbody></table></div><div class="pagination"><div id="customersPagInfo"></div><div id="customersPagBtns"></div></div></div></div></div></div>
+      <div class="cart-panel"><div style="overflow-x:auto"><table class="inv-table"><thead><tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>العنوان</th><th>الرصيد</th><th>إجراءات</th></tr></thead><tbody id="customersTableBody"></tbody></table></div><div class="pagination"><div id="customersPagInfo"></div><div id="customersPagBtns"></div></div></div></div></div></div>
       <div class="modal-bg" id="customerModal"><div class="modal"><div class="modal-title" id="customerModalTitle"><i class="ti ti-user-plus"></i> إضافة عميل جديد</div><div class="field"><label>الاسم</label><input id="customerName"></div><div class="field"><label>الهاتف</label><input id="customerPhone"></div><div class="field"><label>العنوان</label><input id="customerAddress"></div><div class="field"><label>الرصيد الابتدائي (عليه)</label><input id="customerBalance" type="number" value="0"></div><div class="modal-foot" style="display:flex;gap:10px;margin-top:1rem"><button class="btn btn-success" id="saveCustomerBtn">حفظ</button><button class="btn btn-outline" id="closeCustomerModal">إلغاء</button></div></div></div>
       <div class="modal-bg" id="statementModal"><div class="modal"><div class="modal-title"><i class="ti ti-file-text"></i> كشف حساب العميل</div><div id="statementContent"></div><div class="modal-foot" style="display:flex;gap:10px;margin-top:1rem"><button class="btn btn-primary" id="printStatementBtn"><i class="ti ti-printer"></i> طباعة</button><button class="btn btn-outline" id="closeStatementModal"><i class="ti ti-x"></i> إغلاق</button></div></div></div>
     `;
@@ -2360,7 +2360,7 @@ initFactoryLaundryBalances();
           <input type="date" id="voucherDateTo" style="padding:8px;background:#0f172a;border:1px solid rgba(56,189,248,0.3);border-radius:8px;color:#ffffff">
           <button class="btn btn-outline" id="filterVouchersBtn"><i class="ti ti-filter"></i> فلتر</button>
         </div>
-        <div class="table-panel"><div style="overflow-x:auto"><table class="inv-table"><thead><tr><th>رقم السند</th><th>النوع</th><th>المبلغ</th><th>الخزينة</th><th>الجهة</th><th>البيان</th><th>التاريخ</th><th>إجراءات</th></tr></thead><tbody id="vouchersTableBody"></tbody></table></div></div>
+        <div class="cart-panel"><div style="overflow-x:auto"><table class="inv-table"><thead><tr><th>رقم السند</th><th>النوع</th><th>المبلغ</th><th>الخزينة</th><th>الجهة</th><th>البيان</th><th>التاريخ</th><th>إجراءات</th></tr></thead><tbody id="vouchersTableBody"></tbody></table></div></div>
       </div></div></div>
       
       <!-- مودال السند -->
@@ -2907,7 +2907,7 @@ const netWorth = totalAssets - totalLiabilities;                       // صاف
         <!-- بحث -->
         <input id="supplierSearch" placeholder="🔍 بحث باسم المورد أو الهاتف..." class="search-inp" style="margin-bottom:10px">
         <!-- جدول الموردين -->
-        <div class="table-panel">
+        <div class="cart-panel">
           <div style="overflow-x:auto"><table class="inv-table">
             <thead><tr><th>#</th><th>اسم المورد</th><th>الهاتف</th><th>العنوان</th><th>إجمالي المشتريات</th><th>المدفوع</th><th>الرصيد</th><th>إجراءات</th></tr></thead>
             <tbody id="suppliersTableBody"></tbody>
@@ -3147,7 +3147,7 @@ const netWorth = totalAssets - totalLiabilities;                       // صاف
         <div class="stat-card"><div style="color:#f87171;font-size:24px;margin-bottom:4px"><i class="ti ti-coin"></i></div><div class="stat-value">${totalCost.toFixed(0)} ج</div><div class="stat-label">إجمالي تكاليف الإنتاج</div></div>
       </div>
       <!-- جدول الأوامر -->
-      <div class="table-panel"><div style="overflow-x:auto"><table class="inv-table">
+      <div class="cart-panel"><div style="overflow-x:auto"><table class="inv-table">
         <thead><tr><th>رقم الأمر</th><th>اسم المنتج</th><th>الكمية</th><th>مخزن الخام</th><th>مخزن الاكسسوار</th><th>مخزن المنتج النهائي</th><th>المغسلة</th><th>المصنع</th><th>تكلفة الوحدة</th><th>سعر البيع</th><th>الربح/وحدة</th><th>الحالة</th><th>إجراءات</th></tr></thead>
         <tbody id="productionTableBody"></tbody>
       </table></div>
